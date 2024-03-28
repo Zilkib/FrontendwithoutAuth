@@ -94,26 +94,7 @@ const ConditionInput: React.FC = () => {
 					text: '',
 				},
 			],
-			clinicalStatus: {
-				coding: [
-					{
-						system: clinicalStatusSystem,
-						code: clinicalStatusCode,
-						display: clinicalStatusDisplay,
-					},
-				],
-				text: '',
-			},
-			verificationStatus: {
-				coding: [
-					{
-						system: verificationStatusSystem,
-						code: verificationStatusCode,
-						display: verificationStatusDisplay,
-					},
-				],
-				text: '',
-			},
+			
 			code: {
 				coding: [{ system: codeSystem, code: codeCode, display: codeDisplay }],
 				text: '',
@@ -143,89 +124,31 @@ const ConditionInput: React.FC = () => {
 					className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3"
 					onSubmit={handleSubmit}
 				>
-					<FormField
-						label="Identifier System"
-						name="identifierSystem"
-						type="text"
-					/>
-					<FormField
-						label="Identifier Value"
-						name="identifierValue"
-						type="text"
-					/>
-					<FormField
-						label="Category System"
-						name="categorySystem"
-						type="text"
-					/>
-					<FormField label="Category Code" name="categoryCode" type="text" />
-					<FormField
-						label="Category Display"
-						name="categoryDisplay"
-						type="text"
-					/>
-					<FormField
-						label="Clinical Status System"
-						name="clinicalStatusSystem"
-						type="text"
-					/>
-					<FormField
-						label="Clinical Status Code"
-						name="clinicalStatusCode"
-						type="text"
-					/>
-					<FormField
-						label="Clinical Status Display"
-						name="clinicalStatusDisplay"
-						type="text"
-					/>
-					<FormField
-						label="Verification Status System"
-						name="verificationStatusSystem"
-						type="text"
-					/>
-					<FormField
-						label="Verification Status Code"
-						name="verificationStatusCode"
-						type="text"
-					/>
-					<FormField
-						label="Verification Status Display"
-						name="verificationStatusDisplay"
-						type="text"
-					/>
-					<FormField label="Code System" name="codeSystem" type="text" />
-					<FormField label="Code Code" name="codeCode" type="text" />
-					<FormField label="Code Display" name="codeDisplay" type="text" />
-					<FormField
-						label="Subject Reference"
-						name="subjectReference"
-						type="text"
-					/>
-					<FormField label="Subject Type" name="subjectType" type="text" />
-					<FormField label="Onset Date Time" name="onsetDateTime" type="text" />
-					<FormField label="Asserted Date" name="assertedDate" type="text" />
-					<FormField
-						label="Recorder Reference"
-						name="recorderReference"
-						type="text"
-					/>
-					<FormField label="Recorder Type" name="recorderType" type="text" />
-					<FormField
-						label="Note Author String"
-						name="noteAuthorString"
-						type="text"
-					/>
-					<FormField label="Note Text" name="noteText" type="text" />
-
-					<div className="justify-center flex-2">
-						<button
-							className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded object-center text-lg"
-							type="submit"
-						>
-							Submit
-						</button>
+					<FormField label="Patient(Identifier)" name="identifierSystem" type="text"/>
+					<FormField label="Code" name="code" type="text" />
+					<FormField label="Diagnose" name="diagnose" type="text" />
+					<div className="p-3 font-mono md:font-mono text-lg/5 md:text-lg/5">
+					<label>
+						Issue Date:
+						<input
+						className="rounded border-b-2"
+						type="datetime-local"
+						name="issueDate"
+						required
+						defaultValue={new Date().toISOString()}
+						/>
+					</label>
+					<br />
 					</div>
+					<FormField label="Note" name="note" type="text" />
+					<FormField label="Active" name="active" type="checkbox" />
+					
+					<div className="justify-center flex-2">
+              		<button
+               			 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded object-center text-lg "type="submit">
+                			Submit
+              		</button>
+            		</div>
 
 					<SubmissionStatus
 						submissionStatus={submissionStatus}

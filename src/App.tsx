@@ -21,49 +21,16 @@ function App() {
       <div className="min-h-screen flex flex-col">
         <Routes>
           <Route path="/" element={<Welcome />} />
-          <Route
-            path="/patient"
-            element={<AuthenticationGuard component={PatientList} />}
-          />
-          <Route
-            path="/observations"
-            element={<AuthenticationGuard component={ObservationAll} />}
-          />
-          <Route
-            path="/add"
-            element={<AuthenticationGuard component={PatientForm} />}
-          />
-          <Route
-            path="/patient/:patientId"
-            element={<AuthenticationGuard component={PatientDetails} />}
-          />
-          <Route
-            path="/observations/:patientId"
-            element={
-              <AuthenticationGuard component={PatientObservationsList} />
-            }
-          />
-          <Route
-            path="/observations/addObservation/:patientId"
-            element={<AuthenticationGuard component={ObservationInput} />}
-          />
-          <Route 
-            path="/addCondition" 
-            element = {<AuthenticationGuard component={ConditionInput} />}
-          />
-          <Route path="/observation/:observationId" 
-          element={<AuthenticationGuard component={ObservationDetails} />}
-          />
-          <Route
-						path="/condition/:conditionId"
-						element={<AuthenticationGuard component={ConditionDetails} />}
-					/>
-          <Route
-						path="/condition"
-						element={<AuthenticationGuard component={ConditionList} />}
-					/>
-
-
+          <Route path="/patient" element={<PatientList/>} />
+          <Route path="/observations" element={<ObservationAll/>} />
+          <Route path="/add" element={<PatientForm/>} />
+          <Route path="/patient/:patientId"element={<PatientDetails/>} /> 
+          <Route path="/observations/:patientId" element={<PatientObservationsList/>} />
+          <Route path="/observations/addObservation/:patientId" element={<ObservationInput/>} />
+          <Route path="/addCondition" element = {<ConditionInput/>} />
+          <Route path="/observation/:observationId" element={<ObservationDetails/>} />
+          <Route path="/condition/:conditionId" element={<ConditionDetails/>} />
+          <Route path="/condition" element ={<ConditionList/>} />
         </Routes>
       </div>
     </Router>
