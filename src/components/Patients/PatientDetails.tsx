@@ -27,7 +27,7 @@ const PatientDetails = () => {
   }, [patientId, getAccessTokenSilently]);
 
   const fetchPatient = async () => {
-    const token = await getAccessTokenSilently();
+    const token = "" /*await getAccessTokenSilently()*/;
     try {
       const response = await fetch(
         `http://localhost:8080/fhir/Patient/${patientId}`,
@@ -79,7 +79,7 @@ const PatientDetails = () => {
     editedPatient: fhirR4.Patient
   ) => {
     event.preventDefault();
-    const token = await getAccessTokenSilently();
+    const token = "" /*await getAccessTokenSilently()*/;
     try {
       const response = await fetch(
         `http://localhost:8080/fhir/Patient/${patientId}`,
@@ -117,7 +117,7 @@ const PatientDetails = () => {
    * @see {@link http://hl7.org/fhir/R4/http.html#delete|FHIR DELETE}
    */
   const handleDelete = async () => {
-    const token = await getAccessTokenSilently();
+    const token = "" /*await getAccessTokenSilently()*/;
     try {
       const response = await fetch(
         `http://localhost:8080/fhir/Patient/${patientId}`,

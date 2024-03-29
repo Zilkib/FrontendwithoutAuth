@@ -145,7 +145,7 @@ const ObservationInput: React.FC = () => {
     newTypeOfObservationCoding.code = loincCodeValue;
     newObservationCoding.coding = [newTypeOfObservationCoding];
 
-    const token = await getAccessTokenSilently();
+    const token ="" /*await getAccessTokenSilently()*/;
 
     if (selectedFiles) {
       const derivedFrom: fhirR4.Reference[] = [];

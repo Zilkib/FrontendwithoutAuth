@@ -16,7 +16,7 @@ Modal.setAppElement("#root");
 
 function Welcome() {
   //const { isAuthenticated, getAccessTokenSilently } = useAuth0();
-  const [isModalOpen, setModalOpen] = useState<boolean>(false);
+  //const [isModalOpen, setModalOpen] = useState<boolean>(false);
   //const [token, setToken] = useState<string>("");
 
 

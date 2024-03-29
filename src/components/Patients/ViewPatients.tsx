@@ -43,7 +43,7 @@ const PatientList: React.FC = () => {
    * @function
    */
   const fetchPatients = async () => {
-    const token = await getAccessTokenSilently();
+    const token = "" /*await getAccessTokenSilently()*/;
     try {
       const response = await fetch(
         "http://localhost:8080/fhir/Patient?_count=" +

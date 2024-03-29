@@ -77,7 +77,7 @@ const PatientObservationsList = () => {
    * Fetch Observations data for a given patient.
    */
   const fetchObservation = async () => {
-    const token = await getAccessTokenSilently();
+    const token  ="" /*await getAccessTokenSilently()*/;
     try {
       const response = await fetch(
         `http://localhost:8080/fhir/Observation?subject=${patientId}&_count=${mediaPerPage}&_offset=${offsetMediaPerPage}`,

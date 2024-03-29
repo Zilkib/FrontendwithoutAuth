@@ -26,7 +26,7 @@ const ConditionDetails = () => {
 	}, [conditionId, getAccessTokenSilently]);
 
 	const fetchCondition = async () => {
-		const token = await getAccessTokenSilently();
+		const token = "" /*await getAccessTokenSilently()*/;
 		try {
 			const response = await fetch(
 				`http://localhost:8080/fhir/Condition/${conditionId}`,
@@ -60,7 +60,7 @@ const ConditionDetails = () => {
 		editedCondition: fhirR4.Condition
 	) => {
 		event.preventDefault();
-		const token = await getAccessTokenSilently();
+		const token = "" /*await getAccessTokenSilently()*/;
 		try {
 			const response = await fetch(
 				`http://localhost:8080/fhir/Condition/${conditionId}`,
@@ -85,7 +85,7 @@ const ConditionDetails = () => {
 	};
 
 	const handleDelete = async () => {
-		const token = await getAccessTokenSilently();
+		const token = "" /*await getAccessTokenSilently()*/;
 		try {
 			const response = await fetch(
 				`http://localhost:8080/fhir/Condition/${conditionId}`,

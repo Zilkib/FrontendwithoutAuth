@@ -38,7 +38,7 @@ const ObservationAll: React.FC = () => {
    * @returns {Promise<void>}
    */
   const fetchObservations = async () => {
-    const token = await getAccessTokenSilently();
+    const token = "" /*await getAccessTokenSilently()*/;
     try {
       const response = await fetch(
         "http://localhost:8080/fhir/Observation?" +

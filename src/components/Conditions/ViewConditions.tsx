@@ -38,7 +38,7 @@ const ConditionList: React.FC = () => {
 	 * @function
 	 */
 	const fetchConditions = async () => {
-		const token = await getAccessTokenSilently();
+		const token = "" /*await getAccessTokenSilently()*/;
 		try {
 			const response = await fetch(
 				`http://localhost:8080/fhir/Condition?_count=${conditionsPerPage}&_offset=${offsetConditionsPerPage}`,

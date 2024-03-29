@@ -50,7 +50,7 @@ const ObservationDetails = () => {
    * */
   const fetchObservation = async () => {
     try {
-      const token = await getAccessTokenSilently();
+      const token = "" /*await getAccessTokenSilently()*/;
       const response = await fetch(
         `http://localhost:8080/fhir/Observation/${observationId}`,
         {
@@ -180,7 +180,7 @@ const ObservationDetails = () => {
   ) => {
     event.preventDefault();
     try {
-      const token = await getAccessTokenSilently();
+      const token = "" /*await getAccessTokenSilently()*/;
       const response = await fetch(
         `http://localhost:8080/fhir/Observation/${observationId}`,
         {
@@ -222,7 +222,7 @@ const ObservationDetails = () => {
    */
   const handleDelete = async () => {
     try {
-      const token = await getAccessTokenSilently();
+      const token = "" /*await getAccessTokenSilently()*/;
 
       // Fetch the Observation first
       const response = await fetch(
