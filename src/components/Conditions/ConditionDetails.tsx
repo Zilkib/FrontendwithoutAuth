@@ -26,7 +26,7 @@ const ConditionDetails = () => {
 	}, [conditionId, getAccessTokenSilently]);
 
 	const fetchCondition = async () => {
-		const token = "" /*await getAccessTokenSilently()*/;
+		const token ="" /*await getAccessTokenSilently()*/;
 		try {
 			const response = await fetch(
 				`http://localhost:8080/fhir/Condition/${conditionId}`,
@@ -97,7 +97,7 @@ const ConditionDetails = () => {
 				}
 			);
 			if (response.ok) {
-				navigate(`/conditions`);
+				navigate(`/condition`);
 			} else {
 				setSubmissionStatus('failure');
 				console.error('Failed to delete condition');
@@ -135,18 +135,17 @@ const ConditionDetails = () => {
 						</div>
 						<div>
 							<p className="text-lg font-medium">Patient Identifier:</p>
-							<p className="text-gray-600">{condition.subject?.reference}</p>
+							<p className="text-gray-600">
+								{condition.subject?.identifier?.value}
+							</p>
 						</div>
 						<div>
 							<p className="text-lg font-medium">Recorded Date:</p>
-							<p className="text-gray-600">{condition.onsetDateTime}</p>
+							{condition.recordedDate
+								? condition.recordedDate.toLocaleString()
+								: ''}
 						</div>
-						<div>
-							<p className="text-lg font-medium">Verification Status:</p>
-							<p className="text-gray-600">
-								{condition.verificationStatus?.coding?.[0]?.display}
-							</p>
-						</div>
+
 						<div>
 							<p className="text-lg font-medium">Clinical Status:</p>
 							<p className="text-gray-600">

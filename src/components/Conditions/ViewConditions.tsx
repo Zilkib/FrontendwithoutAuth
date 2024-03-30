@@ -15,6 +15,7 @@ const ConditionList: React.FC = () => {
 	const [sortAttribute, setSortAttribute] = useState('recordedDate');
 	const [conditionsPerPage, setConditionsPerPage] = useState(20);
 	const [offsetConditionsPerPage, setOffsetConditionsPerPage] = useState(0);
+	const [patientData, setPatientData] = useState<fhirR4.Patient[]>([]);
 	const navigate = useNavigate();
 
 	// Fetch conditions when the component mounts
@@ -48,122 +49,20 @@ const ConditionList: React.FC = () => {
 					},
 				}
 			); // Replace with your API endpoint
-			// const data = await response.json();
-			const conditions = [
-				{
-					resourceType: 'Condition',
-					id: 'example1',
-					clinicalStatus: {
-						coding: [
-							{
-								system:
-									'http://terminology.hl7.org/CodeSystem/condition-clinical',
-								code: 'active',
-								display: 'Active',
-							},
-						],
-					},
-					verificationStatus: {
-						coding: [
-							{
-								system:
-									'http://terminology.hl7.org/CodeSystem/condition-ver-status',
-								code: 'confirmed',
-								display: 'Confirmed',
-							},
-						],
-					},
-					category: [
-						{
-							coding: [
-								{
-									system:
-										'http://terminology.hl7.org/CodeSystem/condition-category',
-									code: 'problem-list-item',
-									display: 'Problem List Item',
-								},
-							],
-						},
-					],
-					code: {
-						coding: [
-							{
-								system: 'http://snomed.info/sct',
-								code: '386661006',
-								display: 'Fever',
-							},
-						],
-					},
-					subject: {
-						reference: 'Patient/example',
-					},
-				},
-				{
-					resourceType: 'Condition',
-					id: 'example2',
-					clinicalStatus: {
-						coding: [
-							{
-								system:
-									'http://terminology.hl7.org/CodeSystem/condition-clinical',
-								code: 'resolved',
-								display: 'Resolved',
-							},
-						],
-					},
-					verificationStatus: {
-						coding: [
-							{
-								system:
-									'http://terminology.hl7.org/CodeSystem/condition-ver-status',
-								code: 'confirmed',
-								display: 'Confirmed',
-							},
-						],
-					},
-					category: [
-						{
-							coding: [
-								{
-									system:
-										'http://terminology.hl7.org/CodeSystem/condition-category',
-									code: 'encounter-diagnosis',
-									display: 'Encounter Diagnosis',
-								},
-							],
-						},
-					],
-					code: {
-						coding: [
-							{
-								system: 'http://snomed.info/sct',
-								code: '195967001',
-								display: 'Traumatic injury of head',
-							},
-						],
-					},
-					subject: {
-						reference: 'Patient/example',
-					},
-					note: [
-						{
-							text: 'This is a note',
-						},
-					],
-				},
-			];
+			const data = await response.json();
+
 			// Extract the resource property from the Bundle entry
 
-			// if ('entry' in data) {
-			// 	const conditionsData = data.entry.map(
-			// 		(entry: BundleEntry) => entry.resource
-			// 	);
-			// 	// Store the extracted conditions in state
-			// 	setConditions(conditionsData);
-			// } else {
-			// 	//TODO : What should happen if we have reached the limit. Some warning?
-			// }
-			setConditions(conditions as fhirR4.Condition[]);
+			if ('entry' in data) {
+				const conditionsData = data.entry.map(
+					(entry: BundleEntry) => entry.resource
+				);
+
+				// Store the extracted conditions in state
+				setConditions(conditionsData as fhirR4.Condition[]);
+			} else {
+				//TODO : What should happen if we have reached the limit. Some warning?
+			}
 		} catch (error) {
 			console.error('Error fetching conditions:', error);
 		}
@@ -355,14 +254,20 @@ const ConditionList: React.FC = () => {
 								Patient Name
 							</th>
 							<th className="p-4 font-mono md:font-mono text-lg/5 md:text-lg/5">
-								Patient Identifier
+								Patient Id
 							</th>
 							<th className="p-4 font-mono md:font-mono text-lg/5 md:text-lg/5">
 								Recorded Date
 							</th>
 							<th className="p-4 font-mono md:font-mono text-lg/5 md:text-lg/5">
-								Verification Status
+								Diagnose
 							</th>
+							<th className="p-4 font-mono md:font-mono text-lg/5 md:text-lg/5">
+								Code
+							</th>
+							{/* <th className="p-4 font-mono md:font-mono text-lg/5 md:text-lg/5">
+								Verification Status
+							</th> */}
 							<th className="p-4 font-mono md:font-mono text-lg/5 md:text-lg/5">
 								Clinical Status
 							</th>
@@ -386,11 +291,19 @@ const ConditionList: React.FC = () => {
 									{condition.subject?.identifier?.value}
 								</td>
 								<td className="p-4 font-mono md:font-mono text-lg/5 md:text-lg/5">
-									{condition.onsetDateTime}
+									{condition.recordedDate? condition.recordedDate.toLocaleString().slice(0,-5).replace("T"," ")
+										: ''}
 								</td>
 								<td className="p-4 font-mono md:font-mono text-lg/5 md:text-lg/5">
-									{condition.verificationStatus?.coding?.[0]?.display}
+									{condition.code?.coding?.[0]?.code}
 								</td>
+								<td className="p-4 font-mono md:font-mono text-lg/5 md:text-lg/5">
+									{condition.code?.coding?.[0]?.display}
+								</td>
+								
+								{/* <td className="p-4 font-mono md:font-mono text-lg/5 md:text-lg/5">
+									{condition.verificationStatus?.coding?.[0]?.display}
+								</td> */}
 								<td className="p-4 font-mono md:font-mono text-lg/5 md:text-lg/5">
 									{condition.clinicalStatus?.coding?.[0]?.display}
 								</td>

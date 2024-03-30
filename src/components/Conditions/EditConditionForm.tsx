@@ -23,12 +23,51 @@ const EditConditionForm: React.FC<EditConditionFormProps> = ({
 	const handleInputChange = (
 		e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
 	): void => {
-		const { name, value } = e.target;
-		setEditedCondition(prevCondition => ({
-			...prevCondition,
-			[name]: value,
-		}));
+		let { name, value } = e.target;
+
+		// Create a copy of the editedCondition state
+		let updatedCondition: fhirR4.Condition = { ...editedCondition };
+
+		// Check if the name is onsetDateTime
+		if (name === 'onsetDateTime') {
+			// Convert the date string to a Date object
+			value = value + ':00+00:00';
+			// Update the state with the modified onsetDateTime
+			setEditedCondition({ ...updatedCondition, onsetDateTime: value });
+			return;
+		}
+
+		// Split the name attribute by '.' to handle nested properties
+		const nameParts: string[] = name.split('.');
+
+		// Traverse the nested structure and update the value
+		let currentLevel: any = updatedCondition;
+		for (let i = 0; i < nameParts.length - 1; i++) {
+			if (!currentLevel[nameParts[i]]) {
+				// If the nested property doesn't exist, create it as an empty object or array
+				currentLevel[nameParts[i]] = {};
+			}
+			// Move to the next level
+			currentLevel = currentLevel[nameParts[i]];
+		}
+
+		// Update the final nested property with the new value
+		const finalName = nameParts[nameParts.length - 1];
+		if (Array.isArray(currentLevel[finalName])) {
+			// If it's an array, assume it's an array of objects and handle it accordingly
+			currentLevel[finalName][0].text = value;
+		} else {
+			// If it's not an array, just set the value directly
+			currentLevel[finalName] = value;
+		}
+
+		// Update the state with the modified condition
+		setEditedCondition(updatedCondition);
 	};
+
+	const formattedDateTime = editedCondition.recordedDate
+		? editedCondition.recordedDate.toString().slice(0, 16) // Extract the first 16 characters (YYYY-MM-DDTHH:MM)
+		: '';
 
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
 		e.preventDefault();
@@ -46,7 +85,7 @@ const EditConditionForm: React.FC<EditConditionFormProps> = ({
 					<input
 						type="text"
 						id="patientName"
-						name="patientName"
+						name="subject.display"
 						value={editedCondition.subject?.display || ''}
 						onChange={handleInputChange}
 						className="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-1 focus:ring-blue-500"
@@ -59,38 +98,26 @@ const EditConditionForm: React.FC<EditConditionFormProps> = ({
 					<input
 						type="text"
 						id="patientIdentifier"
-						name="patientIdentifier"
+						name="subject.identifier.value"
 						value={editedCondition.subject?.identifier?.value || ''}
 						onChange={handleInputChange}
 						className="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-1 focus:ring-blue-500"
 					/>
 				</div>
 				<div className="mb-4">
-					<label htmlFor="recordedDate" className="text-lg font-medium">
+					<label htmlFor="onsetDateTime" className="text-lg font-medium">
 						Recorded Date:
 					</label>
 					<input
-						type="date"
-						id="recordedDate"
-						name="recordedDate"
-						value={editedCondition.onsetDateTime || ''}
-						onChange={handleInputChange}
+						id="onsetDateTime"
 						className="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-1 focus:ring-blue-500"
+						type="datetime-local"
+						name="onsetDateTime"
+						value={formattedDateTime || ''}
+						onChange={handleInputChange}
 					/>
 				</div>
-				<div className="mb-4">
-					<label htmlFor="verificationStatus" className="text-lg font-medium">
-						Verification Status:
-					</label>
-					<input
-						type="text"
-						id="verificationStatus"
-						name="verificationStatus"
-						value={editedCondition.verificationStatus?.text || ''}
-						onChange={handleInputChange}
-						className="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-1 focus:ring-blue-500"
-					/>
-				</div>
+
 				<div className="mb-4">
 					<label htmlFor="clinicalStatus" className="text-lg font-medium">
 						Clinical Status:
@@ -98,7 +125,7 @@ const EditConditionForm: React.FC<EditConditionFormProps> = ({
 					<input
 						type="text"
 						id="clinicalStatus"
-						name="clinicalStatus"
+						name="clinicalStatus.text"
 						value={editedCondition.clinicalStatus?.text || ''}
 						onChange={handleInputChange}
 						className="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-1 focus:ring-blue-500"
@@ -110,7 +137,7 @@ const EditConditionForm: React.FC<EditConditionFormProps> = ({
 					</label>
 					<textarea
 						id="note"
-						name="note"
+						name="note.0.text"
 						value={editedCondition.note?.[0]?.text || ''}
 						onChange={handleInputChange}
 						className="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-1 focus:ring-blue-500"

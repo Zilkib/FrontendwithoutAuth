@@ -17,21 +17,29 @@ const ConditionInput: React.FC = () => {
 	const [conditionData, setConditionData] = useState<fhirR4.Condition>({
 		resourceType: 'Condition',
 		identifier: [{ system: '', value: '' }],
-		category: [{ coding: [{ system: '', code: '', display: '' }], text: '' }],
+
 		clinicalStatus: {
-			coding: [{ system: '', code: '', display: '' }],
+			// coding: [{ system: '', code: '', display: '' }],
 			text: '',
 		},
 		verificationStatus: {
-			coding: [{ system: '', code: '', display: '' }],
+			// coding: [{ system: '', code: '', display: '' }],
 			text: '',
 		},
-		code: { coding: [{ system: '', code: '', display: '' }], text: '' },
+		code: {
+			// coding: [{ system: '', code: '', display: '' }],
+			text: '',
+		},
 		subject: { reference: '', type: '' },
 		onsetDateTime: '',
 		abatementDateTime: '',
-		recorder: { reference: '', type: '' },
-		note: [{ authorString: '', text: '' }],
+		// recorder: { reference: '', type: '' },
+		note: [
+			{
+				// authorString: '',
+				text: '',
+			},
+		],
 	});
 
 	/**
@@ -48,64 +56,131 @@ const ConditionInput: React.FC = () => {
 		e.preventDefault();
 		// Extract the values from the form and prepare them for the FHIR object.
 		const formData = new FormData(e.currentTarget);
-		const identifierSystem = formData.get('identifierSystem') as string;
-		const identifierValue = formData.get('identifierValue') as string;
-		const categorySystem = formData.get('categorySystem') as string;
-		const categoryCode = formData.get('categoryCode') as string;
-		const categoryDisplay = formData.get('categoryDisplay') as string;
-		const clinicalStatusSystem = formData.get('clinicalStatusSystem') as string;
-		const clinicalStatusCode = formData.get('clinicalStatusCode') as string;
-		const clinicalStatusDisplay = formData.get(
-			'clinicalStatusDisplay'
-		) as string;
-		const verificationStatusSystem = formData.get(
-			'verificationStatusSystem'
-		) as string;
-		const verificationStatusCode = formData.get(
-			'verificationStatusCode'
-		) as string;
-		const verificationStatusDisplay = formData.get(
-			'verificationStatusDisplay'
-		) as string;
-		const codeSystem = formData.get('codeSystem') as string;
-		const codeCode = formData.get('codeCode') as string;
-		const codeDisplay = formData.get('codeDisplay') as string;
-		const subjectReference = formData.get('subjectReference') as string;
-		const subjectType = formData.get('subjectType') as string;
-		const onsetDateTime = formData.get('onsetDateTime') as string;
-		const assertedDate = formData.get('assertedDate') as string;
+
+		//const clinicalStatusDisplay = formData.get('diagnose') as string;
+		const newclinicalStatus = new fhirR4.CodeableConcept();
+    		newclinicalStatus.coding = [
+      {
+        system: "http://hl7.org/fhir/ValueSet/condition-clinical",
+        code:
+          (
+            e.currentTarget.elements.namedItem(
+              "clinicalStatus"
+            ) as HTMLSelectElement
+          ).value ?? "",
+        display:
+          (
+            e.currentTarget.elements.namedItem(
+              "clinicalStatus"
+            ) as HTMLSelectElement
+          ).selectedOptions[0].textContent ?? "",
+      },
+    ];
+
+		const newIdentifier = new fhirR4.Identifier();
 		const recorderReference = formData.get('recorderReference') as string;
 		const recorderType = formData.get('recorderType') as string;
 		const noteAuthorString = formData.get('noteAuthorString') as string;
-		const noteText = formData.get('noteText') as string;
+		const identifierSystem = formData.get('identifierSystem') as string;
+		const codeDisplay = formData.get('code') as string;
+		const diagnoseString = formData.get("diagnose") as string;
+
+		const DateTimeValue = formData.get("issueDate") as string;
+		const issueDate = new Date(DateTimeValue).toISOString();
+		const noteText = formData.get('note') as string;
 
 		// Constructing Condition object
 		const condition: fhirR4.Condition = {
-			identifier: [{ system: identifierSystem, value: identifierValue }],
+			identifier: [newIdentifier],
+			clinicalStatus: newclinicalStatus,
+			verificationStatus: {
+				coding: [
+					{
+						system: 'http://snomed.info/sct',
+						code: '609096000',
+						display: '',
+					},
+				],
+				text: '',
+			},
+
 			category: [
 				{
 					coding: [
 						{
-							system: categorySystem,
-							code: categoryCode,
-							display: categoryDisplay,
+							system: 'http://snomed.info/sct',
+							code: '408646000',
+							display: 'Clinical finding',
 						},
 					],
 					text: '',
 				},
 			],
-			
-			code: {
-				coding: [{ system: codeSystem, code: codeCode, display: codeDisplay }],
+
+			severity: {
+				coding: [
+					{
+						system: 'http://snomed.info/sct',
+						code: '408646000',
+						display: 'Clinical finding',
+					},
+				],
 				text: '',
 			},
-			subject: { reference: subjectReference, type: subjectType },
-			onsetDateTime: onsetDateTime,
-			abatementDateTime: assertedDate,
+
+			code: {
+				coding: [
+					{ system: 'http://snomed.info/sct', code: codeDisplay, display: diagnoseString },
+				],
+				text: "",
+			},
+			bodySite: [
+				{
+					coding: [
+						{
+							system: 'http://snomed.info/sct',
+							code: '408646000',
+							display: 'Clinical finding',
+						},
+					],
+					text: '',
+				},
+			],
+
+			subject: {
+				reference: '',
+				type: 'Patient',
+				identifier: { system: '', value: identifierSystem },
+			},
+			encounter: { reference: '', type: '' },
+			onsetDateTime: '',
+			onsetAge: { value: 0, unit: '' },
+			onsetPeriod: { start: '', end: '' },
+			onsetRange: { low: { value: 0, unit: '' }, high: { value: 0, unit: '' } },
+			onsetString: '',
+			abatementDateTime: '',
+			abatementAge: { value: 0, unit: '' },
+			abatementPeriod: { start: '', end: '' },
+			abatementRange: {
+				low: { value: 0, unit: '' },
+				high: { value: 0, unit: '' },
+			},
+			abatementString: '',
+			recordedDate: issueDate,
+			stage: [
+				{
+					summary: { coding: [], text: '' },
+					assessment: [],
+					type: { coding: [], text: '' },
+				},
+			],
+			evidence: [],
 			recorder: { reference: recorderReference, type: recorderType },
 			note: [{ authorString: noteAuthorString, text: noteText }],
 			resourceType: 'Condition',
 		};
+
+		console.log(condition);
 
 		// Send the Condition data to the server
 		try {
@@ -124,31 +199,50 @@ const ConditionInput: React.FC = () => {
 					className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3"
 					onSubmit={handleSubmit}
 				>
-					<FormField label="Patient(Identifier)" name="identifierSystem" type="text"/>
+					<FormField
+						label="Patient(Identifier)"
+						name="identifierSystem"
+						type="text"
+					/>
 					<FormField label="Code" name="code" type="text" />
 					<FormField label="Diagnose" name="diagnose" type="text" />
 					<div className="p-3 font-mono md:font-mono text-lg/5 md:text-lg/5">
-					<label>
-						Issue Date:
-						<input
-						className="rounded border-b-2"
-						type="datetime-local"
-						name="issueDate"
-						required
-						defaultValue={new Date().toISOString()}
-						/>
-					</label>
-					<br />
+						<label>
+							Issue Date:
+							<input
+								className="rounded border-b-2"
+								type="datetime-local"
+								name="issueDate"
+								required
+								defaultValue={new Date().toISOString()}
+							/>
+						</label>
+						<br />
 					</div>
 					<FormField label="Note" name="note" type="text" />
-					<FormField label="Active" name="active" type="checkbox" />
-					
+					<FormField
+					label="Clinical Status"
+					name="clinicalStatus"
+					type="select"
+					options={[
+						{ label: "Active", value: "active" },
+						{ label: "Recurrence", value: "resurrence" },
+						{ label: "Relapse", value: "relapse" },
+						{ label: "Inactive", value: "Inactive" },
+						{ label: "Remission", value: "remission" },
+						{ label: "Resolved", value: "resolved" },
+						{ label: "Unknown", value: "unknown" },
+					]}
+					/>
+
 					<div className="justify-center flex-2">
-              		<button
-               			 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded object-center text-lg "type="submit">
-                			Submit
-              		</button>
-            		</div>
+						<button
+							className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded object-center text-lg "
+							type="submit"
+						>
+							Submit
+						</button>
+					</div>
 
 					<SubmissionStatus
 						submissionStatus={submissionStatus}
