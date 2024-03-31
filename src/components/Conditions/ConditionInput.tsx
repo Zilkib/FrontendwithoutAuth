@@ -130,9 +130,13 @@ const ConditionInput: React.FC = () => {
 
 			code: {
 				coding: [
-					{ system: 'http://snomed.info/sct', code: codeDisplay, display: diagnoseString },
+					{ 
+						system: 'http://snomed.info/sct', 
+						code: codeDisplay, 
+						display: diagnoseString 
+					},
 				],
-				text: "",
+				text: '',
 			},
 			bodySite: [
 				{

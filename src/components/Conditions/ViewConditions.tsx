@@ -251,7 +251,7 @@ const ConditionList: React.FC = () => {
 					<thead>
 						<tr>
 							<th className="p-4 font-mono md:font-mono text-lg/5 md:text-lg/5">
-								Patient Name
+								
 							</th>
 							<th className="p-4 font-mono md:font-mono text-lg/5 md:text-lg/5">
 								Patient Id
@@ -285,7 +285,7 @@ const ConditionList: React.FC = () => {
 								className="cursor-pointer hover:bg-gray-100"
 							>
 								<td className="p-4 font-mono md:font-mono text-lg/2 md:text-lg/2 whitespace-nowrap">
-									{condition.subject?.display}
+									
 								</td>
 								<td className="p-4 font-mono md:font-mono text-lg/5 md:text-lg/5">
 									{condition.subject?.identifier?.value}
@@ -295,10 +295,11 @@ const ConditionList: React.FC = () => {
 										: ''}
 								</td>
 								<td className="p-4 font-mono md:font-mono text-lg/5 md:text-lg/5">
-									{condition.code?.coding?.[0]?.code}
+									{condition.code?.coding?.[0]?.display}
+									
 								</td>
 								<td className="p-4 font-mono md:font-mono text-lg/5 md:text-lg/5">
-									{condition.code?.coding?.[0]?.display}
+									{condition.code?.coding?.[0]?.code}
 								</td>
 								
 								{/* <td className="p-4 font-mono md:font-mono text-lg/5 md:text-lg/5">

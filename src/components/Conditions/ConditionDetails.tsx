@@ -129,10 +129,7 @@ const ConditionDetails = () => {
 						<h2 className="text-xl font-bold mb-2">Condition Details</h2>
 					</header>
 					<div className="grid grid-cols-2 gap-4 px-6 py-4">
-						<div>
-							<p className="text-lg font-medium">Patient Name:</p>
-							<p className="text-gray-600">{condition.subject?.display}</p>
-						</div>
+						
 						<div>
 							<p className="text-lg font-medium">Patient Identifier:</p>
 							<p className="text-gray-600">
@@ -140,11 +137,18 @@ const ConditionDetails = () => {
 							</p>
 						</div>
 						<div>
-							<p className="text-lg font-medium">Recorded Date:</p>
-							{condition.recordedDate
-								? condition.recordedDate.toLocaleString()
-								: ''}
+							<p className="text-lg font-medium">Diagnose:</p>
+							<p className="text-gray-600">
+								{condition.code?.coding?.[0]?.display}
+							</p>
 						</div>
+						<div>
+							<p className="text-lg font-medium">Code:</p>
+							<p className="text-gray-600">
+								{condition.code?.coding?.[0]?.code}
+							</p>
+						</div>
+						
 
 						<div>
 							<p className="text-lg font-medium">Clinical Status:</p>

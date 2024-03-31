@@ -21,7 +21,7 @@ const EditConditionForm: React.FC<EditConditionFormProps> = ({
 		useState<fhirR4.Condition>(condition);
 
 	const handleInputChange = (
-		e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+		e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement |HTMLSelectElement>
 	): void => {
 		let { name, value } = e.target;
 
@@ -78,19 +78,7 @@ const EditConditionForm: React.FC<EditConditionFormProps> = ({
 		<div>
 			<h2 className="text-2xl font-bold mb-4">Edit Condition</h2>
 			<form onSubmit={handleSubmit}>
-				<div className="mb-4">
-					<label htmlFor="patientName" className="text-lg font-medium">
-						Patient Name:
-					</label>
-					<input
-						type="text"
-						id="patientName"
-						name="subject.display"
-						value={editedCondition.subject?.display || ''}
-						onChange={handleInputChange}
-						className="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-1 focus:ring-blue-500"
-					/>
-				</div>
+				
 				<div className="mb-4">
 					<label htmlFor="patientIdentifier" className="text-lg font-medium">
 						Patient Identifier:
@@ -105,16 +93,29 @@ const EditConditionForm: React.FC<EditConditionFormProps> = ({
 					/>
 				</div>
 				<div className="mb-4">
-					<label htmlFor="onsetDateTime" className="text-lg font-medium">
-						Recorded Date:
+					<label htmlFor="diagnose" className="text-lg font-medium">
+						Diagnose:
 					</label>
 					<input
-						id="onsetDateTime"
-						className="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-1 focus:ring-blue-500"
-						type="datetime-local"
-						name="onsetDateTime"
-						value={formattedDateTime || ''}
+						type="text"
+						id="diagnose"
+						name="diagnose.text"
+						value={editedCondition.code?.coding?.[0]?.display || ''}
 						onChange={handleInputChange}
+						className="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-1 focus:ring-blue-500"
+					/>
+				</div>
+				<div className="mb-4">
+					<label htmlFor="code" className="text-lg font-medium">
+						Code:
+					</label>
+					<input
+						type="text"
+						id="code"
+						name="code.value"
+						value={editedCondition.code?.coding?.[0]?.code || ''}
+						onChange={handleInputChange}
+						className="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-1 focus:ring-blue-500"
 					/>
 				</div>
 
@@ -122,15 +123,30 @@ const EditConditionForm: React.FC<EditConditionFormProps> = ({
 					<label htmlFor="clinicalStatus" className="text-lg font-medium">
 						Clinical Status:
 					</label>
-					<input
+					{/* <input
 						type="text"
 						id="clinicalStatus"
 						name="clinicalStatus.text"
 						value={editedCondition.clinicalStatus?.text || ''}
 						onChange={handleInputChange}
 						className="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-1 focus:ring-blue-500"
-					/>
+					/> */}
+					<select
+						name="clinicalStatus.coding.0.display"
+						className="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-1 focus:ring-blue-500"
+						value={editedCondition.clinicalStatus?.coding?.[0]?.display || ''}
+						onChange={handleInputChange}
+					>
+						<option value="active">Active</option>
+						<option value="recurrence">Recurrence</option>
+						<option value="relapse">Relapse</option>
+						<option value="inactive">Inactive</option>
+						<option value="remission">Remission</option>
+						<option value="resolved">Resolved</option>
+						<option value="unknown">Unknown</option>
+					</select>
 				</div>
+
 				<div className="mb-4">
 					<label htmlFor="note" className="text-lg font-medium">
 						Note:
