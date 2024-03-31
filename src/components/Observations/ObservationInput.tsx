@@ -145,7 +145,7 @@ const ObservationInput: React.FC = () => {
     newTypeOfObservationCoding.code = loincCodeValue;
     newObservationCoding.coding = [newTypeOfObservationCoding];
 
-    const token ="" /*await getAccessTokenSilently()*/;
+    const token = ""; /*await getAccessTokenSilently()*/
 
     if (selectedFiles) {
       const derivedFrom: fhirR4.Reference[] = [];
@@ -251,41 +251,52 @@ const ObservationInput: React.FC = () => {
    *
    * @param {React.ChangeEvent<HTMLInputElement>} e - The event object from the file input change event.
    */
+  // const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (e.target.files && e.target.files.length > 0) {
+  //     const files = Array.from(e.target.files); // Convert FileList to an array
+  //     // For each file, we create a new Promise that resolves with the base64 string of the file.
+  //     // The FileReader API is used to read the file as a data URL, and the base64 part of the data URL is extracted.
+  //     Promise.all(
+  //       files.map((file) => {
+  //         return new Promise<string>((resolve, reject) => {
+  //           const reader = new FileReader();
+  //           // When the file is successfully read, resolve the Promise with the base64 string
+  //           reader.onload = (event: ProgressEvent<FileReader>) => {
+  //             if (event.target && event.target.result) {
+  //               const base64Binary = event.target.result.toString();
+  //               resolve(base64Binary);
+  //             }
+  //           };
+  //           // If there's an error reading the file, reject the Promise with the error
+  //           reader.onerror = (event: ProgressEvent<FileReader>) => {
+  //             reject(event.target?.error);
+  //           };
+  //           // Read the file as a data URL
+  //           reader.readAsDataURL(file); // Read the file as data URL
+  //         });
+  //       })
+  //     )
+  //       // When all Promises have resolved, the base64 strings will be set in the state
+  //       .then((base64Binaries) => {
+  //         setSelectedFiles((prevPhotoFiles) => [
+  //           ...(prevPhotoFiles || []),
+  //           ...base64Binaries,
+  //         ]); // Append the new base64 binaries to the existing state
+  //       })
+  //       .catch((error) => {
+  //         console.error("Error converting files:", error);
+  //       });
+  //   }
+  // };
+
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const files = Array.from(e.target.files); // Convert FileList to an array
-      // For each file, we create a new Promise that resolves with the base64 string of the file.
-      // The FileReader API is used to read the file as a data URL, and the base64 part of the data URL is extracted.
-      Promise.all(
-        files.map((file) => {
-          return new Promise<string>((resolve, reject) => {
-            const reader = new FileReader();
-            // When the file is successfully read, resolve the Promise with the base64 string
-            reader.onload = (event: ProgressEvent<FileReader>) => {
-              if (event.target && event.target.result) {
-                const base64Binary = event.target.result.toString();
-                resolve(base64Binary);
-              }
-            };
-            // If there's an error reading the file, reject the Promise with the error
-            reader.onerror = (event: ProgressEvent<FileReader>) => {
-              reject(event.target?.error);
-            };
-            // Read the file as a data URL
-            reader.readAsDataURL(file); // Read the file as data URL
-          });
-        })
-      )
-        // When all Promises have resolved, the base64 strings will be set in the state
-        .then((base64Binaries) => {
-          setSelectedFiles((prevPhotoFiles) => [
-            ...(prevPhotoFiles || []),
-            ...base64Binaries,
-          ]); // Append the new base64 binaries to the existing state
-        })
-        .catch((error) => {
-          console.error("Error converting files:", error);
-        });
+    const url = e.target.value.trim(); // Get the trimmed URL from the input field
+    alert(url);
+    if (url !== "") {
+      setSelectedFiles((prevPhotoFiles) => [
+        ...(prevPhotoFiles || []),
+        url, // Append the URL to the existing state
+      ]);
     }
   };
 
@@ -473,7 +484,7 @@ const ObservationInput: React.FC = () => {
           <br />
         </div>
         {/*File */}
-        <div className="p-3 font-mono md:font-mono text-lg/5 md:text-lg/5">
+        {/* <div className="p-3 font-mono md:font-mono text-lg/5 md:text-lg/5">
           <label>
             Media:
             <input
@@ -481,6 +492,19 @@ const ObservationInput: React.FC = () => {
               accept="image/*"
               onChange={handlePhotoChange}
               multiple
+            />
+          </label>
+          <br />
+        </div> */}
+        <div className="p-3 font-mono md:font-mono text-lg/5 md:text-lg/5">
+          <label>
+            Media URL:
+            <input
+              className="rounded border-b-2"
+              type="text"
+              name="mediaUrl"
+              onChange={handlePhotoChange}
+              required
             />
           </label>
           <br />

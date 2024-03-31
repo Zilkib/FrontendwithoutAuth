@@ -99,7 +99,7 @@ const EditConditionForm: React.FC<EditConditionFormProps> = ({
 					<input
 						type="text"
 						id="diagnose"
-						name="diagnose.text"
+						name="code.coding.0.display"
 						value={editedCondition.code?.coding?.[0]?.display || ''}
 						onChange={handleInputChange}
 						className="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-1 focus:ring-blue-500"
@@ -112,7 +112,7 @@ const EditConditionForm: React.FC<EditConditionFormProps> = ({
 					<input
 						type="text"
 						id="code"
-						name="code.value"
+						name="code.coding.0.code"
 						value={editedCondition.code?.coding?.[0]?.code || ''}
 						onChange={handleInputChange}
 						className="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-1 focus:ring-blue-500"
