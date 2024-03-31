@@ -11,7 +11,7 @@ const ConditionList: React.FC = () => {
 	const { getAccessTokenSilently } = useAuth0();
 	const [conditions, setConditions] = useState<fhirR4.Condition[]>([]);
 	const [searchText, setSearchText] = useState('');
-	const [filterAttribute, setFilterAttribute] = useState('patient');
+	const [filterAttribute, setFilterAttribute] = useState('code');
 	const [sortAttribute, setSortAttribute] = useState('recordedDate');
 	const [conditionsPerPage, setConditionsPerPage] = useState(20);
 	const [offsetConditionsPerPage, setOffsetConditionsPerPage] = useState(0);
@@ -39,7 +39,7 @@ const ConditionList: React.FC = () => {
 	 * @function
 	 */
 	const fetchConditions = async () => {
-		const token = "" /*await getAccessTokenSilently()*/;
+		const token = "" ; /*await getAccessTokenSilently();*/
 		try {
 			const response = await fetch(
 				`http://localhost:8080/fhir/Condition?_count=${conditionsPerPage}&_offset=${offsetConditionsPerPage}`,
@@ -57,6 +57,23 @@ const ConditionList: React.FC = () => {
 				const conditionsData = data.entry.map(
 					(entry: BundleEntry) => entry.resource
 				);
+
+				// get patient data from each condition database
+				const patientPromises = await conditionsData.map(
+					(condition: fhirR4.Condition) =>
+						fetch(
+							`http://localhost:8080/fhir/Patient/${condition.subject?.identifier?.value}`
+						)
+				);
+
+				const patientResponses = await Promise.all(patientPromises);
+
+				const patientData = await Promise.all(
+					patientResponses.map(response => response.json())
+				);
+
+				// Store the extracted patient data in state
+				setPatientData(patientData as fhirR4.Patient[]);
 
 				// Store the extracted conditions in state
 				setConditions(conditionsData as fhirR4.Condition[]);
@@ -85,7 +102,36 @@ const ConditionList: React.FC = () => {
 			filterAttribute,
 			searchText
 		);
-		const sortedConditions = sortResources(filteredConditions, sortAttribute);
+		const sortedConditions = filteredConditions.sort((a, b) => {
+			// Sort by code
+			if (sortAttribute === 'code') {
+				return (
+					(a?.code?.coding?.[0]?.code ?? '').localeCompare(
+						b?.code?.coding?.[0]?.code ?? ''
+					) ?? 0
+				);
+			}
+			// Sort by patient ID
+			else if (sortAttribute === 'patientId') {
+				return (
+					(a?.subject?.identifier?.value ?? '').localeCompare(
+						b?.subject?.identifier?.value ?? ''
+					) ?? 0
+				);
+			}
+			// Sort by clinical status
+			else if (sortAttribute === 'clinicalStatus') {
+				return (
+					(a?.clinicalStatus?.coding?.[0]?.display ?? '').localeCompare(
+						b?.clinicalStatus?.coding?.[0]?.display ?? ''
+					) ?? 0
+				);
+			}
+			// Add more conditions for additional sorting attributes
+			else {
+				return 0; // No sorting
+			}
+		});
 		return sortedConditions;
 	};
 
@@ -179,17 +225,19 @@ const ConditionList: React.FC = () => {
 						value={filterAttribute}
 						onChange={handleFilterAttributeChange}
 					>
-						<option value="patient">Search by Patient</option>
-						{/* Add options for other attributes */}
+						<option value="code">Search by Condition Code</option>
+						<option value="patientId">Search by Patient ID</option>
+						<option value="clinicalStatus"> Search by Clinical Status</option>
 					</select>
 					<select
 						className="rounded border-b-2 mr-2 font-mono md:font-mono text-lg/5 md:text-lg/5 mb-2 md:mb-0"
 						value={sortAttribute}
 						onChange={handleSortAttributeChange}
 					>
-						<option value="recordedDate">Sort by Recorded Date</option>
-						{/* Add options for             <option value="verificationStatus">Sort by Verification Status</option>
-            {/* Add options for other attributes */}
+						{/* sort data by code, patientid and clinical status */}
+						<option value="code">Sort by Condition Code</option>
+						<option value="patientId">Sort by Patient ID</option>
+						{/* <option value="clinicalStatus"> Sort by Clinical Status</option> */}
 					</select>
 					<input
 						className="rounded border-b-2 mr-2"
@@ -250,9 +298,7 @@ const ConditionList: React.FC = () => {
 				<table className="w-full border-collapse">
 					<thead>
 						<tr>
-							<th className="p-4 font-mono md:font-mono text-lg/5 md:text-lg/5">
-								
-							</th>
+							<th className="p-4 font-mono md:font-mono text-lg/5 md:text-lg/5"></th>
 							<th className="p-4 font-mono md:font-mono text-lg/5 md:text-lg/5">
 								Patient Id
 							</th>
@@ -284,24 +330,25 @@ const ConditionList: React.FC = () => {
 								onClick={() => handleRowClick(condition.id)}
 								className="cursor-pointer hover:bg-gray-100"
 							>
-								<td className="p-4 font-mono md:font-mono text-lg/2 md:text-lg/2 whitespace-nowrap">
-									
-								</td>
+								<td className="p-4 font-mono md:font-mono text-lg/2 md:text-lg/2 whitespace-nowrap"></td>
 								<td className="p-4 font-mono md:font-mono text-lg/5 md:text-lg/5">
 									{condition.subject?.identifier?.value}
 								</td>
 								<td className="p-4 font-mono md:font-mono text-lg/5 md:text-lg/5">
-									{condition.recordedDate? condition.recordedDate.toLocaleString().slice(0,-5).replace("T"," ")
+									{condition.recordedDate
+										? condition.recordedDate
+												.toLocaleString()
+												.slice(0, -5)
+												.replace('T', ' ')
 										: ''}
 								</td>
 								<td className="p-4 font-mono md:font-mono text-lg/5 md:text-lg/5">
 									{condition.code?.coding?.[0]?.display}
-									
 								</td>
 								<td className="p-4 font-mono md:font-mono text-lg/5 md:text-lg/5">
 									{condition.code?.coding?.[0]?.code}
 								</td>
-								
+
 								{/* <td className="p-4 font-mono md:font-mono text-lg/5 md:text-lg/5">
 									{condition.verificationStatus?.coding?.[0]?.display}
 								</td> */}
