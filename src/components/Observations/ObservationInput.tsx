@@ -291,7 +291,6 @@ const ObservationInput: React.FC = () => {
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const url = e.target.value.trim(); // Get the trimmed URL from the input field
-    alert(url);
     if (url !== "") {
       setSelectedFiles((prevPhotoFiles) => [
         ...(prevPhotoFiles || []),
