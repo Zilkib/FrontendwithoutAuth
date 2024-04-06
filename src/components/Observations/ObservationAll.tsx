@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { fhirR4 } from '@smile-cdr/fhirts';
 import BundleEntry from '../Utils/BundleEntry';
-import { useAuth0 } from '@auth0/auth0-react';
+//import { useAuth0 } from '@auth0/auth0-react';
 import { filterResources, sortResources } from '../Utils/utils';
 import Banner from '../elements/Banner';
 import { useNavigate } from 'react-router-dom';
@@ -9,7 +9,8 @@ import { getDisplayTextForCode, displayReferenceRange } from '../Utils/utils';
 
 const ObservationAll: React.FC = () => {
 	// State variables
-	const { getAccessTokenSilently } = useAuth0();
+	//const { getAccessTokenSilently } = useAuth0();
+	const token="";
 	const [observations, setObservations] = useState<fhirR4.Observation[]>([]);
 	const [searchText, setSearchText] = useState('');
 	const [filterAttribute, setFilterAttribute] = useState('');
@@ -18,14 +19,14 @@ const ObservationAll: React.FC = () => {
 	const [offsetObservationsPerPage, setoffsetObservationsPerPage] = useState(0);
 	const [media, setMedia] = useState<fhirR4.Media[]>([]);
 	const navigate = useNavigate();
-
+	
 	// Fetch observations when the component mounts
 	useEffect(() => {
 		fetchObservations();
 	}, [
 		observationsPerPage,
 		offsetObservationsPerPage,
-		getAccessTokenSilently,
+		token,
 		searchText,
 	]);
 

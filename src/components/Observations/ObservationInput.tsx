@@ -3,7 +3,7 @@ import { fhirR4 } from '@smile-cdr/fhirts';
 import { useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import SubmissionStatus from '../elements/SubmissonStatus';
-import { useAuth0 } from '@auth0/auth0-react';
+//import { useAuth0 } from '@auth0/auth0-react';
 import Banner from '../elements/Banner';
 import { post } from '../Utils/utils';
 
@@ -14,7 +14,7 @@ const ObservationInput: React.FC = () => {
 	const [submissionStatus, setSubmissionStatus] = useState<
 		'success' | 'failure' | null
 	>(null);
-	const { getAccessTokenSilently } = useAuth0();
+	//const { getAccessTokenSilently } = useAuth0();
 
 	/**
 	 * Handles the submission of the form.

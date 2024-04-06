@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { fhirR4 } from "@smile-cdr/fhirts";
 import BundleEntry from "../Utils/BundleEntry";
-import { useAuth0 } from "@auth0/auth0-react";
+//import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 import {
   filterResources,
@@ -13,7 +13,8 @@ import Banner from "../elements/Banner";
 
 const PatientList: React.FC = () => {
   // State variables
-  const { getAccessTokenSilently } = useAuth0();
+  const token="";
+  //const { getAccessTokenSilently } = useAuth0();
   const [patients, setPatients] = useState<fhirR4.Patient[]>([]);
   const [searchText, setSearchText] = useState("");
   const [filterAttribute, setFilterAttribute] = useState("name");
@@ -25,7 +26,7 @@ const PatientList: React.FC = () => {
   // Fetch patients when the component mounts
   useEffect(() => {
     fetchPatients();
-  }, [patientsPerPage, offsetPatientsPerPage, getAccessTokenSilently]);
+  }, [patientsPerPage, offsetPatientsPerPage, token]);
 
   /**
    * Fetches patient data from the FHIR server.

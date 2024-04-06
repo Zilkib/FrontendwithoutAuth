@@ -4,7 +4,7 @@ import { fhirR4 } from '@smile-cdr/fhirts';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
-import { useAuth0 } from '@auth0/auth0-react';
+//import { useAuth0 } from '@auth0/auth0-react';
 import SubmissionStatus from '../elements/SubmissonStatus';
 import Banner from '../elements/Banner';
 import EditConditionForm from './EditConditionForm';
@@ -17,13 +17,13 @@ const ConditionDetails = () => {
 	const [editedCondition, setEditedCondition] = useState<fhirR4.Condition>(
 		{} as fhirR4.Condition
 	);
-	const { getAccessTokenSilently } = useAuth0();
-
+	//const { getAccessTokenSilently } = useAuth0();
+	const token="";
 	const navigate = useNavigate();
 
 	useEffect(() => {
 		fetchCondition();
-	}, [conditionId, getAccessTokenSilently]);
+	}, [conditionId, token]);
 
 	const fetchCondition = async () => {
 		const token ="" /*await getAccessTokenSilently()*/;

@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import EditPatientForm from "./EditPatientForm";
-import { useAuth0 } from "@auth0/auth0-react";
+//import { useAuth0 } from "@auth0/auth0-react";
 import SubmissionStatus from "../elements/SubmissonStatus";
 import Banner from "../elements/Banner";
 
@@ -18,13 +18,13 @@ const PatientDetails = () => {
   const [editedPatient, setEditedPatient] = useState<fhirR4.Patient>(
     {} as fhirR4.Patient
   );
-  const { getAccessTokenSilently } = useAuth0();
-
+  //const { getAccessTokenSilently } = useAuth0();
+const token="";
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchPatient();
-  }, [patientId, getAccessTokenSilently]);
+  }, [patientId, token]);
 
   const fetchPatient = async () => {
     const token = "" /*await getAccessTokenSilently()*/;

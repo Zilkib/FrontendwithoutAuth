@@ -8,7 +8,6 @@ interface EditPatientFormProps {
   onSave: (event: FormEvent, editedPatient: fhirR4.Patient) => Promise<void>;
   onCancel: () => void;
 }
-
 // `EditPatientForm` is a form for editing patient data.
 // It takes the current patient data, a save handler, and a cancel handler as props.
 const EditPatientForm: React.FC<EditPatientFormProps> = ({

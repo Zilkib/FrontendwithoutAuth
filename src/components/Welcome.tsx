@@ -3,6 +3,7 @@ import "./styles/WelcomeScreen.css";
 //import { useAuth0 } from "@auth0/auth0-react";
 //import LoginButton from "./elements/LoginButton";
 //import LogoutButton from "./elements/LogoutButton";
+//import React, { useState } from "react";
 import {
   faSearch,
   faPlus,
@@ -10,7 +11,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Modal from "react-modal";
-import React, { useState } from "react";
+
 
 Modal.setAppElement("#root");
 

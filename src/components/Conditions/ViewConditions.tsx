@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { fhirR4 } from '@smile-cdr/fhirts';
 import BundleEntry from '../Utils/BundleEntry';
-import { useAuth0 } from '@auth0/auth0-react';
+//import { useAuth0 } from '@auth0/auth0-react';
 import { useNavigate } from 'react-router-dom';
 import { filterResources, sortResources } from '../Utils/utils';
 import Banner from '../elements/Banner';
 
 const ConditionList: React.FC = () => {
 	// State variables
-	const { getAccessTokenSilently } = useAuth0();
+	//const { getAccessTokenSilently } = useAuth0();
+	const token = "";
 	const [conditions, setConditions] = useState<fhirR4.Condition[]>([]);
 	const [searchText, setSearchText] = useState('');
 	const [filterAttribute, setFilterAttribute] = useState('code');
@@ -21,7 +22,7 @@ const ConditionList: React.FC = () => {
 	// Fetch conditions when the component mounts
 	useEffect(() => {
 		fetchConditions();
-	}, [conditionsPerPage, offsetConditionsPerPage, getAccessTokenSilently]);
+	}, [conditionsPerPage, offsetConditionsPerPage, token]);
 
 	/**
 	 * Fetches condition data from the FHIR server.

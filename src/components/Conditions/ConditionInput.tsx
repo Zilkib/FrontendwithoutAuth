@@ -14,7 +14,8 @@ const ConditionInput: React.FC = () => {
 	const [submissionStatus, setSubmissionStatus] = useState<
 		'success' | 'failure' | null
 	>(null);
-	const [conditionData, setConditionData] = useState<fhirR4.Condition>({
+	
+	/*const [conditionData, setConditionData] = useState<fhirR4.Condition>({
 		resourceType: 'Condition',
 		identifier: [{ system: '', value: '' }],
 
@@ -40,7 +41,7 @@ const ConditionInput: React.FC = () => {
 				text: '',
 			},
 		],
-	});
+	});*/
 
 	/**
 	 * Handles the submission of the form.
@@ -207,9 +208,20 @@ const ConditionInput: React.FC = () => {
 						label="Patient(Identifier)"
 						name="identifierSystem"
 						type="text"
+						required
 					/>
-					<FormField label="Code" name="code" type="text" />
-					<FormField label="Diagnose" name="diagnose" type="text" />
+					<FormField 
+						label="Code" 
+						name="code" 
+						type="text" 
+						required
+					/>
+					<FormField 
+						label="Diagnose" 
+						name="diagnose" 
+						type="text" 
+						required
+					/>
 					<div className="p-3 font-mono md:font-mono text-lg/5 md:text-lg/5">
 						<label>
 							Issue Date:
@@ -223,7 +235,12 @@ const ConditionInput: React.FC = () => {
 						</label>
 						<br />
 					</div>
-					<FormField label="Note" name="note" type="text" />
+					<FormField 
+						label="Note" 
+						name="note" 
+						type="text" 
+						required
+					/>
 					<FormField
 					label="Clinical Status"
 					name="clinicalStatus"

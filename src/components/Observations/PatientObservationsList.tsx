@@ -9,7 +9,7 @@ import {
 } from "../Utils/utils";
 import { useNavigate } from "react-router-dom";
 import BundleEntry from "../Utils/BundleEntry";
-import { useAuth0 } from "@auth0/auth0-react";
+//import { useAuth0 } from "@auth0/auth0-react";
 import Banner from "../elements/Banner";
 
 const PatientObservationsList = () => {
@@ -20,13 +20,14 @@ const PatientObservationsList = () => {
   const [sortAttribute, setSortAttribute] = useState("");
   const [mediaPerPage, setMediaPerPage] = useState(20);
   const [offsetMediaPerPage, setoffsetMediaPerPage] = useState(0);
-  const { getAccessTokenSilently } = useAuth0();
+  //const { getAccessTokenSilently } = useAuth0();
+  const token="";
 
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchObservation();
-  }, [patientId, mediaPerPage, offsetMediaPerPage, getAccessTokenSilently]);
+  }, [patientId, mediaPerPage, offsetMediaPerPage, token]);
 
   /**
    * Navigate to the Add Observation page for a given patient.

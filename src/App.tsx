@@ -8,7 +8,7 @@ import PatientDetails from "./components/Patients/PatientDetails";
 import ObservationInput from "./components/Observations/ObservationInput";
 import ObservationDetails from "./components/Observations/ObservationDetails";
 import PatientObservationsList from "./components/Observations/PatientObservationsList";
-import { AuthenticationGuard } from "./components/Utils/AuthenticationGuard";
+//import { AuthenticationGuard } from "./components/Utils/AuthenticationGuard";
 import ObservationAll from "./components/Observations/ObservationAll";
 import ConditionInput from "./components/Conditions/ConditionInput";
 import ConditionList from './components/Conditions/ViewConditions';

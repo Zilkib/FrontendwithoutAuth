@@ -1,20 +1,21 @@
 import { useState, useEffect, FormEvent } from 'react';
 import { useParams } from 'react-router-dom';
 import { fhirR4 } from '@smile-cdr/fhirts';
-import { RenderObservations } from '../Utils/utils';
+//import { RenderObservations } from '../Utils/utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import EditObservationForm from './EditObservationForm';
 import BundleEntry from '../Utils/BundleEntry';
-import { useAuth0 } from '@auth0/auth0-react';
+//import { useAuth0 } from '@auth0/auth0-react';
 import Banner from '../elements/Banner';
 
 const ObservationDetails = () => {
 	const { observationId } = useParams();
 	const [observation, setObservation] = useState<fhirR4.Observation>();
 	const [media, setMedia] = useState<fhirR4.Media[]>([]);
-	const { getAccessTokenSilently } = useAuth0();
+	//const { getAccessTokenSilently } = useAuth0();
+	const token="";
 	const [isEditMode, setIsEditMode] = useState(false);
 	const [editedObservation, setEditedObservation] =
 		useState<fhirR4.Observation>({} as fhirR4.Observation);
@@ -23,7 +24,7 @@ const ObservationDetails = () => {
 
 	useEffect(() => {
 		fetchObservation();
-	}, [observationId, getAccessTokenSilently]);
+	}, [observationId, token]);
 
 	/**
 	 * This asynchronous function is responsible for fetching the data for a specific
