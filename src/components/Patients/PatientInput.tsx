@@ -14,7 +14,7 @@ const PatientForm: React.FC = () => {
     "success" | "failure" | null
   >(null);
   //const { getAccessTokenSilently } = useAuth0();
-
+  
   /**
    * Handles the submission of the patient form.
    *

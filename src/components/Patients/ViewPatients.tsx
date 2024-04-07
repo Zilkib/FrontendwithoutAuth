@@ -22,7 +22,7 @@ const PatientList: React.FC = () => {
   const [patientsPerPage, setpatientsPerPage] = useState(20);
   const [offsetPatientsPerPage, setoffsetPatientsPerPage] = useState(0);
   const navigate = useNavigate();
-
+  
   // Fetch patients when the component mounts
   useEffect(() => {
     fetchPatients();

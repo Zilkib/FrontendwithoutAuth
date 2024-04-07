@@ -211,6 +211,19 @@ const ObservationAll: React.FC = () => {
 		setoffsetObservationsPerPage(value);
 	};
 
+	const openLink = (link: string | undefined) => {
+		const mountPort = 8000; // Replace with your actual mountenport
+		const directory = link; // Extract the directory from media object
+		const url = `http://localhost:${mountPort}/${directory}`;
+
+		// Open link in a new window
+		if (window) {
+			window.open(url, '_blank')?.focus();
+		} else {
+			console.error('Window object is not available.');
+		}
+	};
+
 	return (
 		<div>
 			<Banner>What are you looking for?</Banner>
@@ -368,7 +381,12 @@ const ObservationAll: React.FC = () => {
 										{observation.note?.[0]?.text || '-'}
 									</td>
 									<td className="p-4 font-mono md:font-mono text-lg/5 md:text-lg/5 border whitespace-nowrap">
-										{media?.[index]?.content?.url || '-'}
+										<button
+											className="text-blue-500 underline hover:text-blue-700"
+											onClick={() => openLink(media?.[index]?.content?.url)}
+										>
+											{media?.[index]?.content?.url || '-'}
+										</button>
 									</td>
 								</tr>
 							))}

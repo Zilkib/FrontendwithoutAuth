@@ -9,8 +9,7 @@ import { FormField } from '../Utils/formComponents';
 
 const ConditionInput: React.FC = () => {
 	// State variables
-	const token = '';
-	const { patientId } = useParams<{ patientId: string }>();
+	//const { patientId } = useParams<{ patientId: string }>();
 	const [submissionStatus, setSubmissionStatus] = useState<
 		'success' | 'failure' | null
 	>(null);
@@ -79,6 +78,7 @@ const ConditionInput: React.FC = () => {
     ];
 
 		const newIdentifier = new fhirR4.Identifier();
+		const patientId = formData.get('patientId') as string;
 		const recorderReference = formData.get('recorderReference') as string;
 		const recorderType = formData.get('recorderType') as string;
 		const noteAuthorString = formData.get('noteAuthorString') as string;
@@ -89,6 +89,10 @@ const ConditionInput: React.FC = () => {
 		const DateTimeValue = formData.get("issueDate") as string;
 		const issueDate = new Date(DateTimeValue).toISOString();
 		const noteText = formData.get('note') as string;
+
+		const newPatientReference = new fhirR4.Reference();
+		newPatientReference.type = 'Patient';
+		newPatientReference.reference = 'Patient/' + patientId;
 
 		// Constructing Condition object
 		const condition: fhirR4.Condition = {
@@ -152,11 +156,7 @@ const ConditionInput: React.FC = () => {
 				},
 			],
 
-			subject: {
-				reference: '',
-				type: 'Patient',
-				identifier: { system: '', value: identifierSystem },
-			},
+			subject: newPatientReference,
 			encounter: { reference: '', type: '' },
 			onsetDateTime: '',
 			onsetAge: { value: 0, unit: '' },
@@ -189,6 +189,28 @@ const ConditionInput: React.FC = () => {
 
 		// Send the Condition data to the server
 		try {
+			const token = ''; /*await getAccessTokenSilently()*/
+			try {
+				const response = await fetch(
+					`http://localhost:8080/fhir/Patient/${patientId}`,
+
+					{
+						headers: {
+							Authorization: `Bearer ${token}`,
+						},
+					}
+				);
+
+				const data = await response.json();
+
+				if (!data) {
+					setSubmissionStatus('failure');
+					return;
+				}
+			} catch (error) {
+				console.error('Error fetching patient:', error);
+			}
+
 			await post('Condition', condition, token, setSubmissionStatus);
 			setSubmissionStatus('success');
 		} catch (error) {
@@ -207,6 +229,12 @@ const ConditionInput: React.FC = () => {
 					<FormField
 						label="Patient(Identifier)"
 						name="identifierSystem"
+						type="text"
+						required
+					/>
+					<FormField
+						label="id (Patient unique)"
+						name="patientId"
 						type="text"
 						required
 					/>
