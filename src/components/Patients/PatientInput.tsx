@@ -6,6 +6,7 @@ import { post } from "../Utils/utils";
 //import { useAuth0 } from "@auth0/auth0-react";
 import Banner from "../elements/Banner";
 import { FormField } from "../Utils/formComponents";
+import patientData from '../Utils/examplefile.json';
 
 const PatientForm: React.FC = () => {
   // State variables
@@ -216,6 +217,59 @@ const PatientForm: React.FC = () => {
     }
   };
 
+  /**
+	 * Handles the entering of dummy data for a patient.
+	 *
+	 * This function is invoked when a user wants to add dummy data for a patient.
+	 *
+	 * @function
+	 *
+	 */
+
+	const handleDummyData = async () => {
+		const token = ''; //await getAccessTokenSilently();
+
+		try {
+			for (const patient of patientData) {
+				// Set other fields as empty strings
+				const newIdentifier = new fhirR4.Identifier();
+				newIdentifier.value = patient.patientId.toString();
+				// Create a new human name for the patient
+				const newHumanName = new fhirR4.HumanName();
+				newHumanName.prefix = [''];
+				newHumanName.family = patient.lastname;
+				newHumanName.given = [patient.firstname];
+				const data = {
+					identifier: [newIdentifier], // An identifier for this patient
+
+					name: [newHumanName], // Whether this patient's record is in active use
+					telecom: ['', ''], // A contact detail for the individual
+					gender: '', // male | female | other | unknown
+
+					deceasedBoolean: false,
+					deceasedDateTime: '',
+					address: [''],
+					maritalStatus: '',
+					multipleBirthBoolean: false,
+					multipleBirthInteger: 0,
+					photo: [],
+					contact: [],
+					communication: [''],
+					resourceType: 'Patient',
+					birthDate: patient.dob,
+
+					active: patient.inOrOut === 'I' ? true : false,
+				};
+
+				await post('Patient', data, token, setSubmissionStatus);
+			}
+
+			setSubmissionStatus('success');
+		} catch (error) {
+			setSubmissionStatus('failure');
+		}
+	};
+
   return (
     <div>
       <Banner>Enter new Patient</Banner>
@@ -323,6 +377,13 @@ const PatientForm: React.FC = () => {
               >
                 Submit
               </button>
+              <button
+								className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded object-center text-lg "
+								type="button"
+								onClick={handleDummyData}
+							>
+								Generate Patients
+							</button>
             </div>
             <SubmissionStatus
               submissionStatus={submissionStatus}

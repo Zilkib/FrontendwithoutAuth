@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { fhirR4 } from '@smile-cdr/fhirts';
-import { useParams } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
+//import { useParams } from 'react-router-dom';
+//import { v4 as uuidv4 } from 'uuid';
 import SubmissionStatus from '../elements/SubmissonStatus';
 import Banner from '../elements/Banner';
 import { post } from '../Utils/utils';
