@@ -133,7 +133,7 @@ const ConditionDetails = () => {
 						<div>
 							<p className="text-lg font-medium">Patient Identifier:</p>
 							<p className="text-gray-600">
-								{condition.subject?.identifier?.value}
+								{condition.subject?.reference?.slice(8)}
 							</p>
 						</div>
 						<div>

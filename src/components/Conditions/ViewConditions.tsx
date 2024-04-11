@@ -333,7 +333,9 @@ const ConditionList: React.FC = () => {
 							>
 								<td className="p-4 font-mono md:font-mono text-lg/2 md:text-lg/2 whitespace-nowrap"></td>
 								<td className="p-4 font-mono md:font-mono text-lg/5 md:text-lg/5">
-									{condition.subject?.identifier?.value}
+									{condition.subject?.reference?.slice(8)
+									}
+									
 								</td>
 								<td className="p-4 font-mono md:font-mono text-lg/5 md:text-lg/5">
 									{condition.recordedDate

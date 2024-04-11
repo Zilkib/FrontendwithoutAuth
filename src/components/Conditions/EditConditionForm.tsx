@@ -79,19 +79,7 @@ const EditConditionForm: React.FC<EditConditionFormProps> = ({
 			<h2 className="text-2xl font-bold mb-4">Edit Condition</h2>
 			<form onSubmit={handleSubmit}>
 				
-				<div className="mb-4">
-					<label htmlFor="patientIdentifier" className="text-lg font-medium">
-						Patient Identifier:
-					</label>
-					<input
-						type="text"
-						id="patientIdentifier"
-						name="subject.identifier.value"
-						value={editedCondition.subject?.identifier?.value || ''}
-						onChange={handleInputChange}
-						className="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-1 focus:ring-blue-500"
-					/>
-				</div>
+				
 				<div className="mb-4">
 					<label htmlFor="diagnose" className="text-lg font-medium">
 						Diagnose:

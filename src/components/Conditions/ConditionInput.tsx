@@ -82,7 +82,6 @@ const ConditionInput: React.FC = () => {
 		const recorderReference = formData.get('recorderReference') as string;
 		const recorderType = formData.get('recorderType') as string;
 		const noteAuthorString = formData.get('noteAuthorString') as string;
-		const identifierSystem = formData.get('identifierSystem') as string;
 		const codeDisplay = formData.get('code') as string;
 		const diagnoseString = formData.get("diagnose") as string;
 
@@ -226,12 +225,6 @@ const ConditionInput: React.FC = () => {
 					className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3"
 					onSubmit={handleSubmit}
 				>
-					<FormField
-						label="Patient(Identifier)"
-						name="identifierSystem"
-						type="text"
-						required
-					/>
 					<FormField
 						label="id (Patient unique)"
 						name="patientId"
