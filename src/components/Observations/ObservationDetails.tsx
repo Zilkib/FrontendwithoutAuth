@@ -318,6 +318,19 @@ const ObservationDetails = () => {
 		}
 	};
 
+	const openLink = (link: string | undefined) => {
+		const mountPort = 8000; // Replace with your actual mountenport
+		const directory = link; // Extract the directory from media object
+		const url = `http://localhost:${mountPort}/app/data/${directory}`;
+
+		// Open link in a new window
+		if (window) {
+			window.open(url, '_blank')?.focus();
+		} else {
+			console.error('Window object is not available.');
+		}
+	};
+
 	// Render patient details
 	const renderObservationDetails = () => {
 		if (!observation) {
@@ -352,7 +365,7 @@ const ObservationDetails = () => {
 							{observation.status}
 						</p>
 						<p className="text-sm mb-2">
-							<span className="font-semibold">Category</span>
+							<span className="font-semibold">Category:</span>
 							{observation.category?.[0]?.coding?.[0]?.code}
 						</p>
 						<p className="text-sm mb-2">
@@ -361,12 +374,19 @@ const ObservationDetails = () => {
 						</p>
 					</div>
 				</div>
-				<div>
-					<p className="text-sm mb-2 break-words">
-						<span className="font-semibold">Media Directory:</span>{' '}
-						{media?.[0]?.content?.url || '-'}
-					</p>
-				</div>
+				
+				<td className="p-4 font-mono md:font-mono text-lg/5 md:text-lg/5 border whitespace-nowrap">
+							<p className="text-sm mb-2">
+								<span className="font-semibold">Media Url:</span>{' '}
+								{}
+							</p>
+										<button
+											className="text-blue-500 underline hover:text-blue-700"
+											onClick={() => openLink(media?.[0]?.content?.url)}
+										>
+											{media?.[0]?.content?.url || '-'}
+										</button>
+									</td>
 				<div>
 					<p className="text-sm mb-2">
 						<span className="font-semibold">Note:</span>{' '}

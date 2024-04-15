@@ -214,7 +214,7 @@ const ObservationAll: React.FC = () => {
 	const openLink = (link: string | undefined) => {
 		const mountPort = 8000; // Replace with your actual mountenport
 		const directory = link; // Extract the directory from media object
-		const url = `http://localhost:${mountPort}/${directory}`;
+		const url = `http://localhost:${mountPort}/app/data/${directory}`;
 
 		// Open link in a new window
 		if (window) {
