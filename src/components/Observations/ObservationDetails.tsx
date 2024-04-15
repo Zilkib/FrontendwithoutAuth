@@ -321,6 +321,7 @@ const ObservationDetails = () => {
 	const openLink = (link: string | undefined) => {
 		const mountPort = 8000; // Replace with your actual mountenport
 		const directory = link; // Extract the directory from media object
+		//Change the url to ur volume directory
 		const url = `http://localhost:${mountPort}/app/data/${directory}`;
 
 		// Open link in a new window
