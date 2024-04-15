@@ -293,6 +293,22 @@ const RenderObservationPhoto = ({ media }: { media: fhirR4.Media }) => {
 		</div>
 	);
 };
+/*
+Opens the Link fpr Observation Photos in the backend
+*/
+export const openLink = (link: string | undefined) => {
+	const mountPort = 8000; // Replace with your actual mountenport
+	const directory = link; // Extract the directory from media object
+	//Change the url to ur volume directory
+	const url = `http://localhost:${mountPort}/app/data/${directory}`;
+
+	// Open link in a new window
+	if (window) {
+		window.open(url, '_blank')?.focus();
+	} else {
+		console.error('Window object is not available.');
+	}
+};
 
 /**
  * RenderObservations Component

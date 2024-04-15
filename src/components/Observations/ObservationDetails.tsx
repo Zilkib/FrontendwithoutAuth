@@ -9,6 +9,7 @@ import EditObservationForm from './EditObservationForm';
 import BundleEntry from '../Utils/BundleEntry';
 //import { useAuth0 } from '@auth0/auth0-react';
 import Banner from '../elements/Banner';
+import {openLink} from '../Utils/utils';
 
 const ObservationDetails = () => {
 	const { observationId } = useParams();
@@ -318,19 +319,6 @@ const ObservationDetails = () => {
 		}
 	};
 
-	const openLink = (link: string | undefined) => {
-		const mountPort = 8000; // Replace with your actual mountenport
-		const directory = link; // Extract the directory from media object
-		//Change the url to ur volume directory
-		const url = `http://localhost:${mountPort}/app/data/${directory}`;
-
-		// Open link in a new window
-		if (window) {
-			window.open(url, '_blank')?.focus();
-		} else {
-			console.error('Window object is not available.');
-		}
-	};
 
 	// Render patient details
 	const renderObservationDetails = () => {

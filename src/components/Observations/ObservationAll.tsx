@@ -6,7 +6,7 @@ import { filterResources, sortResources } from '../Utils/utils';
 import Banner from '../elements/Banner';
 import { useNavigate } from 'react-router-dom';
 import { getDisplayTextForCode, displayReferenceRange } from '../Utils/utils';
-
+import {openLink} from '../Utils/utils';
 const ObservationAll: React.FC = () => {
 	// State variables
 	//const { getAccessTokenSilently } = useAuth0();
@@ -211,19 +211,6 @@ const ObservationAll: React.FC = () => {
 		setoffsetObservationsPerPage(value);
 	};
 
-	const openLink = (link: string | undefined) => {
-		const mountPort = 8000; // Replace with your actual mountenport
-		const directory = link; // Extract the directory from media object
-		//Change the url to ur volume directory
-		const url = `http://localhost:${mountPort}/app/data/${directory}`;
-
-		// Open link in a new window
-		if (window) {
-			window.open(url, '_blank')?.focus();
-		} else {
-			console.error('Window object is not available.');
-		}
-	};
 
 	return (
 		<div>
